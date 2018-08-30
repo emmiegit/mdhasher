@@ -1,0 +1,10 @@
+[package]
+name = "mdhasher"
+version = "0.1.0"
+authors = ["Ammon Smith <ammon.i.smith@gmail.com>"]
+
+[dependencies]
+clap = "2"
+fts = "0.2"
+ignore = "0.4"
+shaman = "0.1"

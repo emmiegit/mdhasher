@@ -1,0 +1,11 @@
+# Binaries
+/target
+*.[aod]
+*.so
+*.dylib
+
+# Misc
+*~
+*#
+.*.sw?
+**/*.rs.bk
