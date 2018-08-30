@@ -20,8 +20,10 @@ extern crate shaman;
 
 mod args;
 mod error;
+mod hasher;
 
 use args::Arguments;
+use hasher::hash_recursively;
 use std::process::exit;
 
 pub use error::{Error, StdError};
@@ -38,6 +40,5 @@ fn main() {
         },
     };
 
-    // TODO main execution
-    let _ = args;
+    hash_recursively(&args);
 }

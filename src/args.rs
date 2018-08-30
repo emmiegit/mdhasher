@@ -13,6 +13,7 @@
 
 use {Error, Result};
 use clap::{App, Arg};
+use std::path::PathBuf;
 
 #[derive(Debug, Hash, Copy, Clone, PartialEq, Eq)]
 pub enum LoggingMode {
@@ -26,6 +27,8 @@ pub struct Arguments {
     logging: LoggingMode,
     all: bool,
     ignore: bool,
+    ignore_file: Option<PathBuf>,
+    paths: Vec<PathBuf>,
 }
 
 impl Arguments {
@@ -56,6 +59,19 @@ impl Arguments {
                     .long("noignore")
                     .help("Doesn't respect any .ignore files, renaming all files that match conditions.")
             )
+            .arg(
+                Arg::with_name("ignore")
+                    .short("I")
+                    .long("ignore")
+                    .value_name("FILE")
+                    .help("Specify an additional .ignore file to consider while walking.")
+            )
+            .arg(
+                Arg::with_name("paths")
+                    .multiple(true)
+                    .required(true)
+                    .help("A list of paths to hash.")
+            )
             .get_matches();
 
         let mut config = Arguments::default();
@@ -72,6 +88,14 @@ impl Arguments {
         config.all = matches.is_present("all");
         config.ignore = !matches.is_present("noignore");
 
+        if let Some(path) = matches.value_of_os("ignore") {
+            config.ignore_file = Some(PathBuf::from(path));
+        }
+
+        for path in matches.values_of_os("paths").unwrap() {
+            config.paths.push(PathBuf::from(path));
+        }
+
         Ok(config)
     }
 }
@@ -82,6 +106,8 @@ impl Default for Arguments {
             logging: LoggingMode::Terminal,
             all: false,
             ignore: true,
+            ignore_file: None,
+            paths: Vec::new(),
         }
     }
 }
