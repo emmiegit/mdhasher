@@ -19,10 +19,12 @@ extern crate ignore;
 extern crate shaman;
 
 mod args;
+mod digest;
 mod error;
 mod hasher;
 
 use args::Arguments;
+use digest::Digest;
 use hasher::hash_recursively;
 use std::process::exit;
 
